@@ -1,0 +1,147 @@
+{% extends 'base-with-navbar.html' %}
+{% load static %}
+
+{% block title %} New Document {% endblock %}
+
+{% block stylesheets %}
+<link type="text/css" rel="stylesheet" href="{% static "forms.css" %}"/>
+{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <div class="page-title">
+            New Document
+        </div>
+        <div class="form-container">
+            <form method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                {{ form.tags }}
+                <div class="flexAlign form-input">
+                    <label>{{ form.name.label }}</label>
+                    {{ form.name }}
+                </div>
+                <div class="flexAlign form-input">
+                    <label>{{ form.file.label }}</label>
+                    {{ form.file }}
+                </div>
+                <div class="flexAlign form-input">
+                    <input type="submit" value="Submit"/>
+                </div>
+            </form>
+        </div>
+        <div id="tag-list-container">
+
+        </div>
+
+        <label>
+            Add a tag:
+            <input id="tag_input"/>
+        </label>
+
+        <div class="tag-container" id="tag-container">
+            <!-- Tags -->
+        </div>
+
+    </div>
+{% endblock %}
+
+{% block scripts %}
+
+    <script>
+
+    const tag_input = document.getElementById('tag_input');
+    const tag_container = document.getElementById('tag-container')
+
+    var timerId;
+
+    let tags = new Set();
+
+    tag_input.addEventListener('keyup', function (event) {
+        if (event.key === 'Enter') {
+            if (event.target.value === "")
+                return;
+            if (confirm(`This will create tag '${event.target.value}' once the form is submitted. Are you sure?`)) {
+                add_tag(event.target.value);
+                tags.add(event.target.value);
+            }
+
+        }
+    });
+
+    tag_input.addEventListener('input', async function (event) {
+        value = event.target.value;
+
+        if (value.length < 3) {
+            if (timerId !== undefined)
+                clearTimeout(timerId);
+            return;
+        }
+
+        if (timerId !== undefined)
+            clearTimeout(timerId);
+
+        timerId = setTimeout(() => searchTag(value), 500);
+    });
+
+    async function searchTag(value) {
+        // TODO: Show 'Searching tags...'
+
+        const res = await fetch(`/documents/tags?text=${value}`);
+        const json = await res.json();
+
+        let available_tags = JSON.parse(json.tags);
+
+        tag_container.innerHTML = "";
+        let newHTML = "";
+
+        for (let i = 0; i < available_tags.length; i++) {
+            let div = document.createElement('div');
+            div.className = "tag"
+            div.onclick = function () {
+                add_tag(available_tags[i].fields.name);
+            }
+            div.innerText = available_tags[i].fields.name;
+
+            tag_container.appendChild(div);
+        }
+
+        /*
+        TODO:
+            If there are tags, show them in a dropdown
+        */
+    }
+
+    function add_tag(tag_name) {
+        tags.add(tag_name);
+        show_tags();
+    }
+
+    function remove_tag(tag_name) {
+        // TODO
+        if (confirm("Delete tag '"+tag_name+"' from this document?")) {
+            tags.delete(tag_name);
+            console.log(tags);
+            show_tags();
+        }
+    }
+
+    function show_tags() {
+        const tag_list_container = document.getElementById('tag-list-container');
+
+        tag_list_container.innerHTML = "";
+
+        tags.forEach(tag => {
+            let div = document.createElement("div");
+            div.className = "tag";
+            div.onclick = function () {
+                remove_tag(tag);
+            }
+            div.innerText = tag;
+
+            tag_list_container.appendChild(div);
+        })
+    }
+
+    </script>
+
+{% endblock %}

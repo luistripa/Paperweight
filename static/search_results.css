@@ -1,0 +1,28 @@
+@import url('/static/static/base.css');
+
+.container {
+    margin-top: 20%;
+}
+
+.container .list .list_item_document {
+    display: flex;
+    align-items: center;
+    padding-left: 5px;
+    width: calc(100% - 105px);
+    height: 30px;
+    color: black;
+    font-size: 20px;
+    float: left;
+}
+
+.container .list .list_item_extension {
+    float: left;
+    width: 100px;
+    height: 30px;
+    color: lightgray;
+    font-size: 15px;
+}
+
+.list_item_document:hover, .list_item_extension:hover {
+    background-color: darkgray;
+}

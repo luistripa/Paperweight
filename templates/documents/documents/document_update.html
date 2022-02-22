@@ -1,0 +1,40 @@
+{% extends 'base-with-navbar.html' %}
+{% load static %}
+
+{% block title %} New Document {% endblock %}
+
+{% block stylesheets %}
+<link type="text/css" rel="stylesheet" href="{% static "forms.css" %}"/>
+{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <div class="page-title">
+            Update Document
+        </div>
+        <div class="form-container">
+            <form method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="flexAlign form-input">
+                    <label>{{ form.dossier.label }}</label>
+                    {{ form.dossier }}
+                </div>
+                <div class="flexAlign form-input">
+                    <label>{{ form.section.label }}</label>
+                    {{ form.section }}
+                </div>
+                <div class="flexAlign form-input">
+                    <label>{{ form.name.label }}</label>
+                    {{ form.name }}
+                </div>
+                <div class="flexAlign form-input">
+                    <label>{{ form.file.label }}</label>
+                    {{ form.file }}
+                </div>
+                <div class="flexAlign form-input">
+                    <input type="submit" value="Submit"/>
+                </div>
+            </form>
+        </div>
+    </div>
+{% endblock %}

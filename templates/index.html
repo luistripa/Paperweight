@@ -1,0 +1,48 @@
+{% extends 'base-with-navbar.html' %}
+{% load static %}
+
+{% block title %} Index {% endblock %}
+
+{% block stylesheets %}
+<link type="text/css" rel="stylesheet" href="{% static "index.css" %}"/>
+{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <div class="page-title">
+            Index
+        </div>
+        <div class="page-description">
+            <h2>Paperweight</h2>
+            <p>
+                Paperweight is a lightweight document database that helps in storing
+                any kind of documents (invoices, instruction manuals, etc.) that are often placed in chunky dossiers
+                that are a pain to search through.
+            </p>
+            <p>
+                Paperweight lets users create digital dossiers that resemble the physical ones, only with a lot more flexibility.
+                Sections can be created in each dossier to further improve the organization of documents.
+            </p>
+
+            <h2>Get Started</h2>
+            {% if user.is_authenticated %}
+                <p>
+                    Cool! You're logged in! You can navigate with the navigation bar on the left to browse through
+                    all dossiers or search a document.
+                    To see or create dossiers, head to the <a href="{% url 'documents:dossier_list' %}">Dossiers</a> menu.
+                </p>
+            {% else %}
+                <p>
+                    It appears that you're not logged in. To do so, head to the <a href="{% url 'registration:login' %}?next=/index">Login Page</a>.
+                    If you don't have an account, you have to ask the system administrator to create you one.
+                </p>
+            {% endif %}
+
+            <h2>Author</h2>
+            <p>
+                Paperweight was created by <a href="https://www.linkedin.com/in/luis-tripa-954b9b1a8/" target="_blank">Luís Tripa</a>,
+                a computer engineering student at Nova School of Science and Technology in Portugal.
+            </p>
+        </div>
+    </div>
+{% endblock %}

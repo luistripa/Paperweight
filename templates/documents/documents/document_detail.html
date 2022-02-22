@@ -1,0 +1,28 @@
+{% extends 'base-with-navbar.html' %}
+{% load static %}
+
+{% block title %}
+{{ object.name }}
+{% endblock %}
+
+{% block stylesheets %}
+<link type="text/css" rel="stylesheet" href="{% static 'documents.css' %}"/>
+{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <div class="page-title">
+            Document - {{ document.name }}
+        </div>
+        <div class="document-detail-container">
+            <p>Dossier: {{ object.section.dossier.name }}</p>
+            <p>Section: {{ object.section.name }}</p>
+            <p>Owner: {{ object.owner.user.username }}</p>
+            <p>Document Name: {{ object.name }}</p>
+            <a href="{% url 'documents:document_download' object.section.dossier.id object.section.id object.id %}">Download</a>
+            <a href="{% url 'documents:document_update' dossier.id section.id document.id %}">Edit</a>
+            <a href="">Delete</a>
+        </div>
+
+    </div>
+{% endblock %}
