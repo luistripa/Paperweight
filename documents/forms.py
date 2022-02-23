@@ -7,7 +7,7 @@ class NewDocumentForm(forms.ModelForm):
     class Meta:
         model = Document
         fields = ['name']
-    tags = forms.CharField(max_length=300, widget=forms.TextInput(attrs={'hidden': True}))
+    tags = forms.CharField(max_length=300, widget=forms.TextInput(attrs={'hidden': True}), required=False)
     file = forms.FileField(required=True)
 
 
