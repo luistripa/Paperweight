@@ -19,9 +19,9 @@ from django.urls import path, include
 import documents.views as documents
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
+    path('admin/', admin.site.urls),  # TODO: Remove for production
     path('', documents.index),
     path('index/', documents.index),
     path('documents/', include('documents.urls')),
-    path('auth/', include('registration.urls')),
+    path('registration/', include('registration.urls')),
 ]

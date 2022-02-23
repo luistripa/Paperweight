@@ -27,7 +27,7 @@ DEBUG = True
 
 ALLOWED_HOSTS = ['*']
 
-LOGIN_URL = '/auth/login'
+LOGIN_URL = '/registration/login'
 
 MEDIA_ROOT = 'media/'
 
