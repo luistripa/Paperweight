@@ -244,12 +244,6 @@ class DocumentSearchView(LoginRequiredMixin, FormView):
             for tag in form.cleaned_data['tags']:
                 documents = documents.filter(tags=tag)
 
-        if form.cleaned_data['create_date'] is not None:
-            documents = documents.filter(date_added=form.cleaned_data['create_date'])
-
-        if form.cleaned_data['open_date'] is not None:
-            documents = documents.filter(date_opened=form.cleaned_data['open_date'])
-
         return render(self.request, 'documents/search_results.html', context={'documents': documents})
 
 
