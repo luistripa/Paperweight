@@ -16,21 +16,36 @@ html, body {
     width: 250px;
     height: 100%;
     float: left;
-    background-color: lightblue;
+    background-color: dimgray;
+}
+
+.navbar-container a {
+    text-decoration: none;
 }
 
 .navbar-container .navbar-title {
-    height: 100px !important;
+    height: 120px !important;
+    margin: 0 !important;
     font-size: 30px !important;
+    color: white !important;
+    background: transparent !important;
 }
 
 .navbar-container .navbar-item {
-    width: calc(100% - 20px);
+    width: 100%;
     height: 40px;
-    margin: 10px;
     display: flex;
+    margin-bottom: 10px;
     justify-content: center;
     align-items: center;
+    color: white;
+    background-color: darkgray;
+    transition: ease-in-out 100ms;
+}
+
+.navbar-container .navbar-item:hover {
+    background-color: lightgray;
+    cursor: pointer;
 }
 
 .main-container .page-container {

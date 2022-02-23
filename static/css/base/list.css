@@ -37,31 +37,37 @@
 
     margin: calc((100%/3 - 200px)/2) calc((100%/3 - 200px)/2);
     border-radius: 5px;
-    background-color: lightblue;
+    background-color: darkgray;
 }
 
 .list .list-item:hover {
-    background-color: lightskyblue;
+    background-color: lightgray;
 }
 
 .list .list-item-image {
     width: 200px;
-    height: 200px;
+    height: 190px;
     float: left;
 }
 
 .list-item-image img {
-    width: 160px;
-    height: 160px;
-    margin: 20px;
+    width: 150px;
+    height: 150px;
+    margin: 25px;
 }
 
 .list .list-item-description {
-    width: 200px;
-    height: 20px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    width: calc(100% - 20px);
+    height: 50px;
+    margin: 0 10px;
+    text-align: center;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+
+    font-size: 20px;
+    color: white;
+
 }
 
 .container .list-controls-container {
@@ -90,8 +96,12 @@
     margin: 20px;
     border-radius: 50%;
     color: white;
-    background-color: lightblue;
+    background-color: darkgray;
     font-size: 20px;
+}
+
+.list-controls .list-control:hover {
+    background-color: lightgray;
 }
 
 .list-control img {

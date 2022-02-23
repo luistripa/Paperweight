@@ -40,11 +40,15 @@
 
     margin: 10px 0;
     border-radius: 5px;
-    background-color: lightblue;
+    background-color: darkgray;
+
+    color: white;
+
+    transition: ease-in-out 100ms;
 }
 
 .list .list-item:hover {
-    background-color: lightskyblue;
+    background-color: lightgray;
 }
 
 .container .list-controls-container {
@@ -73,8 +77,12 @@
     margin: 20px;
     border-radius: 50%;
     color: white;
-    background-color: lightblue;
+    background-color: darkgray;
     font-size: 20px;
+}
+
+.list-controls .list-control:hover {
+    background-color: lightgray;
 }
 
 .list-control img {
