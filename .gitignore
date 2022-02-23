@@ -10,3 +10,6 @@ registration/migrations/
 
 # Image templates for editing
 static/images/templates/
+
+# Any file inside media/ used in development
+media/*
