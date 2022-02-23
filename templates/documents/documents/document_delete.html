@@ -1,0 +1,24 @@
+{% extends 'base-with-navbar.html' %}
+{% load static %}
+
+{% block title %}
+
+{% endblock %}
+
+{% block stylesheets %}
+
+{% endblock %}
+
+{% block body %}
+
+    <div class="container">
+        <div class="page-title">
+            Delete document
+        </div>
+        <form method="post">
+            <p>Are you sure you want to delete document: {{ object.name }}?</p>
+            <input type="submit" value="Yes">
+        </form>
+    </div>
+
+{% endblock %}
