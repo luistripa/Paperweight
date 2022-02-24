@@ -22,21 +22,19 @@
 }
 
 .form-container form {
-    display: inline;
     width: 80%;
 }
 
 .form-container form .form-input {
     width: 100%;
-    display: flex;
-    justify-content: center;
-    flex-flow: row wrap;
     margin-bottom: 20px;
 }
 
 .form-container form .form-input label {
+    display: inline-block;
     width: calc(30% - 6px);
     font-size: 20px;
+    float: left;
 }
 
 .form-container form .form-input input {
