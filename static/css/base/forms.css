@@ -30,11 +30,12 @@
     width: 100%;
     display: flex;
     justify-content: center;
+    flex-flow: row wrap;
     margin-bottom: 20px;
 }
 
 .form-container form .form-input label {
-    width: 30%;
+    width: calc(30% - 6px);
     font-size: 20px;
 }
 

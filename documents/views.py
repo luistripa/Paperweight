@@ -165,6 +165,11 @@ class DocumentCreateView(LoginRequiredMixin, SectionMixin, CreateView):
     form_class = NewDocumentForm
 
     def form_valid(self, form):
+        print(form.cleaned_data['tags'])
+
+        tag_list_as_str = form.cleaned_data['tags']
+        tag_list = tag_list_as_str.strip().split(' ')
+
         form.instance.owner = self.request.user.profile
         form.instance.section = Sections.objects.get(id=self.kwargs.get('section_id', None))
 
@@ -176,8 +181,13 @@ class DocumentCreateView(LoginRequiredMixin, SectionMixin, CreateView):
         form.instance.file_path = file_name
 
         form.save()
-        return redirect('documents:document_list', self.kwargs.get('dossier_id'), self.kwargs.get('section_id', None))
 
+        for tag_str in tag_list:
+            tag = Tags.objects.filter(name=tag_str)
+            if tag.exists():
+                form.instance.tags.add(tag[0])
+
+        return redirect('documents:document_list', self.kwargs.get('dossier_id'), self.kwargs.get('section_id', None))
 
 class DocumentUpdateView(LoginRequiredMixin, SectionMixin, UpdateView):
     model = Document
