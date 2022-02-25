@@ -9,18 +9,20 @@ var timerId;
 
 let tags = new Set();
 
-tag_input.addEventListener('keydown', function (event) {
-    let value = event.target.value.trim();
+tag_input.addEventListener('input', function (event) {
+    let value = event.target.value;
+    let trimmed_value = value.trim();
 
-    if (event.key === ' ') {
-        if (event.target.value === "")
-            return;
+    if (trimmed_value.length === 0)
+        return;
+
+    if (value[value.length-1] === " ") {
         clearTimeout(timerId);
-        add_tag(value);
-        tags.add(value);
+        add_tag(trimmed_value);
+        tags.add(trimmed_value);
 
     } else {
-        if (value.length < SEARCH_AFTER_N_LETTERS) {
+        if (trimmed_value.length < SEARCH_AFTER_N_LETTERS) {
             if (timerId !== undefined)
                 clearTimeout(timerId);
             clear_tag_display();
@@ -29,7 +31,7 @@ tag_input.addEventListener('keydown', function (event) {
         if (timerId !== undefined)
             clearTimeout(timerId);
 
-        timerId = setTimeout(() => searchTag(value), SEARCH_DELAY);
+        timerId = setTimeout(() => searchTag(trimmed_value), SEARCH_DELAY);
     }
 });
 

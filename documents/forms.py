@@ -20,6 +20,4 @@ class DocumentSearchForm(forms.Form):
     )
     section = forms.ModelChoiceField(Sections.objects.all(), empty_label='All', required=False)
     name = forms.CharField(label='Document Name: ', required=False)
-    tags = forms.CharField(max_length=300, required=False)
-    create_date = forms.DateField(widget=forms.DateInput(attrs={'type': 'date'}), required=False)
-    open_date = forms.DateField(widget=forms.DateInput(attrs={'type': 'date'}), required=False)
+    tags = forms.CharField(max_length=300, widget=forms.TextInput(attrs={'hidden': True}), required=False)
