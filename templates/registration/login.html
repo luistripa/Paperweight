@@ -25,15 +25,15 @@
         <div class="form-container">
             <form method="post">
                 {% csrf_token %}
-                <div class="flexAlign form-input">
+                <div class="form-input">
                     <label>{{ form.username.label }}</label>
                     {{ form.username }}
                 </div>
-                <div class="flexAlign form-input">
+                <div class="form-input">
                     <label>{{ form.password.label }}</label>
                     {{ form.password }}
                 </div>
-                <div class="flexAlign form-input">
+                <div class="form-input" id="submit">
                     <input type="submit" value="Submit">
                 </div>
             </form>
