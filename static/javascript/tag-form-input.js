@@ -11,11 +11,10 @@ tag_input.addEventListener('keyup', function (event) {
         if (event.target.value === "")
             return;
         let value = event.target.value.trim();
-        if (confirm(`This will create tag '${value}' once the form is submitted. Are you sure?`)) {
+            clearTimeout(timerId);
             add_tag(value);
             tags.add(value);
         }
-    }
 });
 
 tag_input.addEventListener('input', async function (event) {
@@ -24,6 +23,7 @@ tag_input.addEventListener('input', async function (event) {
     if (value.length < 3) {
         if (timerId !== undefined)
             clearTimeout(timerId);
+        clear_tag_display();
         return;
     }
 
@@ -42,7 +42,6 @@ async function searchTag(value) {
     let available_tags = JSON.parse(json.tags);
 
     tag_container.innerHTML = "";
-    let newHTML = "";
 
     for (let i = 0; i < available_tags.length; i++) {
         let div = document.createElement('div');
@@ -69,13 +68,21 @@ async function searchTag(value) {
 function add_tag(tag_name) {
     tags.add(tag_name);
     show_tags();
+    clear_tag_input();
 }
 
 function remove_tag(tag_name) {
-    if (confirm("Delete tag '"+tag_name+"' from this document?")) {
-        tags.delete(tag_name);
-        show_tags();
-    }
+    tags.delete(tag_name);
+    show_tags();
+}
+
+function clear_tag_input() {
+    tag_input.value = "";
+    clear_tag_display();
+}
+
+function clear_tag_display() {
+    tag_container.innerHTML = "";
 }
 
 function show_tags() {
