@@ -1,4 +1,7 @@
 
+const SEARCH_AFTER_N_LETTERS = 3;
+const SEARCH_DELAY = 300; // ms
+
 const tag_input = document.getElementById('tag-input');
 const tag_container = document.getElementById('tag-container')
 
@@ -6,31 +9,28 @@ var timerId;
 
 let tags = new Set();
 
-tag_input.addEventListener('keyup', function (event) {
+tag_input.addEventListener('keydown', function (event) {
+    let value = event.target.value.trim();
+
     if (event.key === ' ') {
         if (event.target.value === "")
             return;
-        let value = event.target.value.trim();
-            clearTimeout(timerId);
-            add_tag(value);
-            tags.add(value);
+        clearTimeout(timerId);
+        add_tag(value);
+        tags.add(value);
+
+    } else {
+        if (value.length < SEARCH_AFTER_N_LETTERS) {
+            if (timerId !== undefined)
+                clearTimeout(timerId);
+            clear_tag_display();
+            return;
         }
-});
-
-tag_input.addEventListener('input', async function (event) {
-    value = event.target.value;
-
-    if (value.length < 3) {
         if (timerId !== undefined)
             clearTimeout(timerId);
-        clear_tag_display();
-        return;
+
+        timerId = setTimeout(() => searchTag(value), SEARCH_DELAY);
     }
-
-    if (timerId !== undefined)
-        clearTimeout(timerId);
-
-    timerId = setTimeout(() => searchTag(value), 300);
 });
 
 async function searchTag(value) {
@@ -42,6 +42,13 @@ async function searchTag(value) {
     let available_tags = JSON.parse(json.tags);
 
     tag_container.innerHTML = "";
+
+    if (available_tags.length === 0) {
+        let p = document.createElement('p');
+        p.innerText = 'No tags with that name where found.';
+        tag_container.appendChild(p);
+        return;
+    }
 
     for (let i = 0; i < available_tags.length; i++) {
         let div = document.createElement('div');

@@ -33,8 +33,8 @@ def sections_from_dossier_as_json(request: HttpRequest, *args, **kwargs):
 def documents_tags_list_as_json(request: HttpRequest, *args, **kwargs):
     search_text = request.GET.get('text', None)
 
-    if search_text is None:
-        raise Exception()  # TODO
+    if search_text == "":
+        return JsonResponse({'tags': '[]'})
 
     tags = Tags.objects.filter(name__contains=search_text)  # TODO: Is this even safe?
 
