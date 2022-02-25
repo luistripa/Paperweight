@@ -250,13 +250,10 @@ class DocumentSearchView(LoginRequiredMixin, FormView):
         if form.cleaned_data['name'] != '':
             documents = documents.filter(name__contains=form.cleaned_data['name'])
 
-        print(form.cleaned_data['tags'])
         tag_str_list = form.cleaned_data['tags'].strip().split(" ")
-        print(tag_str_list)
         if tag_str_list != '':
             tags = Tags.objects.filter(name__in=tag_str_list)
             for tag in tags:
-                print(tag)
                 documents = documents.filter(tags=tag)
 
         return render(self.request, 'documents/search_results.html', context={'object_list': documents})
