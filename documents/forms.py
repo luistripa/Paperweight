@@ -11,6 +11,14 @@ class NewDocumentForm(forms.ModelForm):
     file = forms.FileField(required=True)
 
 
+class EditDocumentForm(forms.ModelForm):
+    class Meta:
+        model = Document
+        fields = ['name']
+    tags = forms.CharField(max_length=300, widget=forms.TextInput(attrs={'hidden': True}), required=False)
+    file = forms.FileField(required=False)
+
+
 class DocumentSearchForm(forms.Form):
     dossier = forms.ModelChoiceField(
         Dossiers.objects.all(),

@@ -8,7 +8,7 @@ from django.http import HttpRequest, FileResponse, JsonResponse
 from django.shortcuts import render, HttpResponseRedirect, redirect
 from django.urls import reverse_lazy
 from django.views import View
-from django.views.generic import FormView, ListView, DetailView, CreateView, UpdateView
+from django.views.generic import FormView, ListView, DetailView, CreateView, UpdateView, DeleteView
 
 from Paperweight.settings import MEDIA_ROOT
 from documents.forms import *
@@ -165,8 +165,6 @@ class DocumentCreateView(LoginRequiredMixin, SectionMixin, CreateView):
     form_class = NewDocumentForm
 
     def form_valid(self, form):
-        print(form.cleaned_data['tags'])
-
         tag_list_as_str = form.cleaned_data['tags']
         tag_list = tag_list_as_str.strip().split(' ')
 
@@ -174,7 +172,7 @@ class DocumentCreateView(LoginRequiredMixin, SectionMixin, CreateView):
         form.instance.section = Sections.objects.get(id=self.kwargs.get('section_id', None))
 
         # Get file
-        file: InMemoryUploadedFile = self.request.FILES['file']
+        file: InMemoryUploadedFile = self.request.FILES.get('file', None)
         file_data = file.read()
         file_name = create_file(file, file_data)
 
@@ -183,30 +181,47 @@ class DocumentCreateView(LoginRequiredMixin, SectionMixin, CreateView):
         form.save()
 
         for tag_str in tag_list:
-            tag = Tags.objects.filter(name=tag_str)
-            if tag.exists():
-                form.instance.tags.add(tag[0])
+            tag = Tags.objects.get_or_create(name=tag_str)
+            form.instance.tags.add(tag)
 
         return redirect('documents:document_list', self.kwargs.get('dossier_id'), self.kwargs.get('section_id', None))
+
 
 class DocumentUpdateView(LoginRequiredMixin, SectionMixin, UpdateView):
     model = Document
     template_name = 'documents/documents/document_update.html'
-    form_class = NewDocumentForm
+    form_class = EditDocumentForm
 
     def form_valid(self, form):
-        # TODO: Delete old file
-        form.instance.owner = self.request.user.profile
-        form.instance.section = Sections.objects.get(id=self.kwargs.get('section_id', None))
+        document: Document = form.instance
+
+        tag_list_as_str = form.cleaned_data['tags']
+        tag_list = tag_list_as_str.strip().split(' ')
 
         # Get file
-        file: InMemoryUploadedFile = self.request.FILES['file']
-        file_data = file.read()
-        file_name = create_file(file, file_data)
+        file: InMemoryUploadedFile = self.request.FILES.get('file', None)
 
-        form.instance.file_path = file_name
+        if file is not None:
+            if os.path.exists(document.file_path.path):
+                os.remove(document.file_path.path)
+            file_data = file.read()
+            file_name = create_file(file, file_data)
 
-        form.save()
+            form.instance.file_path = file_name
+
+        document.tags.set(Tags.objects.none())
+        for tag_str in tag_list:
+            if len(tag_str) == 0:
+                continue
+            tag, created = Tags.objects.get_or_create(name=tag_str)
+            document.tags.add(tag)
+
+        document.save()
+
+        # Delete tags with no documents associated
+        tags_to_delete = Tags.objects.filter(document__isnull=True)
+        tags_to_delete.delete()
+
         return redirect('documents:document_list', self.kwargs.get('dossier_id'), self.kwargs.get('section_id', None))
 
 
@@ -228,11 +243,16 @@ class DocumentDownloadView(LoginRequiredMixin, View):
             return HttpResponseRedirect(f'/documents/{dossier_id}/{section_id}')
         else:
             return FileResponse(
-                open(os.path.join(MEDIA_ROOT, document.file_path.path), 'rb'),
+                open(document.file_path.path, 'rb'),
                 content_type=mimetypes.guess_type(document.file_path.path),
                 as_attachment=False,
                 filename=f'{document.name}{document.extension()}'
             )
+
+
+class DocumentDeleteView(LoginRequiredMixin, DeleteView):
+    model = Document
+    template_name = 'documents/documents/document_delete.html'
 
 
 class DocumentSearchView(LoginRequiredMixin, FormView):
@@ -262,11 +282,11 @@ class DocumentSearchView(LoginRequiredMixin, FormView):
 def create_file(file: InMemoryUploadedFile, data: bytes):
     while True:
         _, extension = os.path.splitext(file.name)
-        file_name = generate_filename(extension)
-        if not os.path.exists(os.path.join(MEDIA_ROOT, file_name)):
-            with open(os.path.join(MEDIA_ROOT, file_name), 'wb') as f:
+        file_path = generate_filename(extension)
+        if not os.path.exists(file_path):
+            with open(file_path, 'wb') as f:
                 f.write(data)
-            return file_name
+            return file_path
 
 
 def generate_filename(extension: str):
@@ -274,4 +294,4 @@ def generate_filename(extension: str):
     for i in range(0, 10):
         letter = random.choice(string.ascii_lowercase)
         file_name += letter
-    return file_name + extension
+    return os.path.join(MEDIA_ROOT, file_name + extension)

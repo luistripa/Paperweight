@@ -6,7 +6,7 @@
 {% endblock %}
 
 {% block stylesheets %}
-
+    <link type="text/css" rel="stylesheet" href="{% static 'css/documents/document-delete.css' %}"
 {% endblock %}
 
 {% block body %}
@@ -15,10 +15,19 @@
         <div class="page-title">
             Delete document
         </div>
-        <form method="post">
+        <div class="form-container">
+            <form method="post">
+            {% csrf_token %}
             <p>Are you sure you want to delete document: {{ object.name }}?</p>
-            <input type="submit" value="Yes">
-        </form>
+            {{ form }}
+            <input type="submit" value="Yes"/>
+            <input type="button"
+                   value="Cancel"
+                   autofocus
+                   onclick="window.location.replace('{% url 'documents:document_detail' object.section.dossier_id object.section_id object.id %}')"/>
+            </form>
+        </div>
+
     </div>
 
 {% endblock %}

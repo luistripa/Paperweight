@@ -40,6 +40,11 @@ urlpatterns = [
         documents.DocumentDownloadView.as_view(),
         name='document_download',
     ),
+    path(
+        'dossiers/<int:dossier_id>/sections/<int:section_id>/documents/<int:pk>/delete',
+        documents.DocumentDeleteView.as_view(),
+        name='document_delete'
+    ),
 
     path('dossiers/search/', documents.DocumentSearchView.as_view(), name='search'),
     path('dossiers/<int:dossier_id>/sections_json', documents.sections_from_dossier_as_json),

@@ -25,7 +25,7 @@
             {% endfor %}
             <a href="{% url 'documents:document_download' object.section.dossier.id object.section.id object.id %}">Download</a>
             <a href="{% url 'documents:document_update' dossier.id section.id document.id %}">Edit</a>
-            <a href="">Delete</a>
+            <a href="{% url 'documents:document_delete' dossier.id section.id document.id %}">Delete</a>
         </div>
 
     </div>

@@ -17,7 +17,7 @@ class Tags(models.Model):
         verbose_name = 'Tag'
         verbose_name_plural = 'Tags'
 
-    name = models.CharField(max_length=100)
+    name = models.CharField(max_length=100, unique=True)
 
     def __str__(self):
         return self.name
