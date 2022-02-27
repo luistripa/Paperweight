@@ -6,7 +6,7 @@ from django.core import serializers
 from django.core.files.uploadedfile import InMemoryUploadedFile
 from django.http import HttpRequest, FileResponse, JsonResponse
 from django.shortcuts import render, HttpResponseRedirect, redirect
-from django.urls import reverse_lazy
+from django.urls import reverse_lazy, reverse
 from django.views import View
 from django.views.generic import FormView, ListView, DetailView, CreateView, UpdateView, DeleteView
 
@@ -66,6 +66,14 @@ class DossierUpdateView(LoginRequiredMixin, UpdateView):
     template_name = 'documents/dossiers/dossier_update.html'
     fields = ['name']
     success_url = reverse_lazy('documents:dossier_list')
+
+
+class DossierDeleteView(LoginRequiredMixin, DeleteView):
+    model = Dossiers
+    template_name = 'documents/dossiers/dossier_delete.html'
+
+    def get_success_url(self):
+        return reverse('documents:dossier_list')
 
 
 class SectionsListView(LoginRequiredMixin, ListView):
@@ -138,6 +146,18 @@ class SectionsUpdateView(LoginRequiredMixin, DossierMixin, UpdateView):
         return redirect('documents:section_list', self.dossier.id)
 
 
+class SectionsDeleteView(LoginRequiredMixin, DossierMixin, DeleteView):
+    model = Sections
+    template_name = 'documents/sections/section_delete.html'
+
+    def get_success_url(self):
+        return reverse(
+            'documents:section_list',
+            kwargs={
+                'dossier_id': self.dossier.id,
+            })
+
+
 class DocumentListView(LoginRequiredMixin, SectionMixin, ListView):
     model = Document
     template_name = 'documents/documents/document_list.html'
@@ -181,7 +201,7 @@ class DocumentCreateView(LoginRequiredMixin, SectionMixin, CreateView):
         form.save()
 
         for tag_str in tag_list:
-            tag = Tags.objects.get_or_create(name=tag_str)
+            tag, created = Tags.objects.get_or_create(name=tag_str)
             form.instance.tags.add(tag)
 
         return redirect('documents:document_list', self.kwargs.get('dossier_id'), self.kwargs.get('section_id', None))
@@ -250,9 +270,17 @@ class DocumentDownloadView(LoginRequiredMixin, View):
             )
 
 
-class DocumentDeleteView(LoginRequiredMixin, DeleteView):
+class DocumentDeleteView(LoginRequiredMixin, SectionMixin, DeleteView):
     model = Document
     template_name = 'documents/documents/document_delete.html'
+
+    def get_success_url(self):
+        return reverse(
+            'documents:document_list',
+            kwargs={
+                'dossier_id': self.dossier.id,
+                'section_id': self.section.id
+            })
 
 
 class DocumentSearchView(LoginRequiredMixin, FormView):

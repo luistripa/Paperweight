@@ -9,6 +9,7 @@ from django.http import HttpRequest
 from django.utils import timezone
 
 # Create your models here.
+from Paperweight import settings
 from registration.models import ProtectionLevels
 
 
@@ -111,7 +112,7 @@ class Document(models.Model):
     protection_level = models.IntegerField(choices=ProtectionLevels.CHOICES, default=ProtectionLevels.PUBLIC)
     section = models.ForeignKey('Sections', on_delete=models.CASCADE)
     name = models.CharField(max_length=300)
-    file_path = models.FileField(upload_to='media/')
+    file_path = models.FileField()
 
     tags = models.ManyToManyField('Tags', blank=True)
 

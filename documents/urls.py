@@ -4,16 +4,45 @@ import documents.views as documents
 
 app_name = 'documents'
 urlpatterns = [
-    path('dossiers/', documents.DossiersListView.as_view(), name='dossier_list'),
-    path('dossiers/new', documents.DossierCreateView.as_view(), name='dossier_create'),
-    path('dossiers/<int:pk>/edit', documents.DossierUpdateView.as_view(), name='dossier_update'),
-    #path('dossiers/<str:search_string>', documents.dossiers_view),
-    path('dossiers/<int:dossier_id>/sections/', documents.SectionsListView.as_view(), name='section_list'),
-    path('dossiers/<int:dossier_id>/sections/new', documents.SectionsCreateView.as_view(), name='section_create'),
+    path(
+        'dossiers/',
+        documents.DossiersListView.as_view(),
+        name='dossier_list'
+    ),
+    path(
+        'dossiers/new',
+        documents.DossierCreateView.as_view(),
+        name='dossier_create'
+    ),
+    path(
+        'dossiers/<int:pk>/edit',
+        documents.DossierUpdateView.as_view(),
+        name='dossier_update'
+    ),
+    path(
+        'dossiers/<int:pk>/delete',
+        documents.DossierDeleteView.as_view(),
+        name='dossier_delete'
+    ),
+    path(
+        'dossiers/<int:dossier_id>/sections/',
+        documents.SectionsListView.as_view(),
+        name='section_list'
+    ),
+    path(
+        'dossiers/<int:dossier_id>/sections/new',
+        documents.SectionsCreateView.as_view(),
+        name='section_create'
+    ),
     path(
         'dossiers/<int:dossier_id>/sections/<int:pk>/edit',
         documents.SectionsUpdateView.as_view(),
         name='section_update'
+    ),
+    path(
+        'dossiers/<int:dossier_id>/sections/<int:pk>/delete',
+        documents.SectionsDeleteView.as_view(),
+        name='section_delete'
     ),
     path(
         'dossiers/<int:dossier_id>/sections/<int:section_id>',

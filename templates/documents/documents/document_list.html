@@ -35,7 +35,7 @@
                         <img src="{% static 'images/edit.png' %}" title="Edit Section" alt="edit icon"/>
                     </div>
                 </a>
-                <a href="">
+                <a href="{% url 'documents:section_delete' dossier.id section.id %}">
                     <div class="list-control">
                         <img src="{% static 'images/delete.png' %}" title="Delete Section" alt="delete icon"/>
                     </div>

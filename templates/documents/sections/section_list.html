@@ -40,7 +40,7 @@
                         <img src="{% static 'images/edit.png' %}" title="Edit dossier" alt="edit icon"/>
                     </div>
                 </a>
-                <a href="">
+                <a href="{% url 'documents:dossier_delete' dossier.id %}">
                     <div class="list-control">
                         <img src="{% static 'images/delete.png' %}" title="Delete dossier" alt="delete icon"/>
                     </div>
