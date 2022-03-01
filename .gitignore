@@ -1,0 +1,15 @@
+.idea/
+venv/
+
+# The dev database
+db.sqlite3
+
+# Migration data
+documents/migrations/
+registration/migrations/
+
+# Image templates for editing
+static/images/templates/
+
+# Any file inside media/ used in development
+media/*

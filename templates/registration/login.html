@@ -1,0 +1,44 @@
+{% extends 'base-with-navbar.html' %}
+{% load static %}
+
+{% block title %}Login{% endblock %}
+
+{% block stylesheets %}
+<link type="text/css" rel="stylesheet" href="{% static 'css/registration/login.css' %}"/>
+{% endblock %}
+
+{% block body %}
+
+    <div class="container">
+        <div class="page-title">
+            Login
+        </div>
+        {% if messages %}
+            <div style="color: darkred">
+                <ul class="messages" style="display: inline-block; width: 100%;">
+                {% for message in messages %}
+                    <li {% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+                {% endfor %}
+                </ul>
+            </div>
+        {% endif %}
+        <div class="form-container">
+            <form method="post">
+                {% csrf_token %}
+                <div class="form-input">
+                    <label>{{ form.username.label }}</label>
+                    {{ form.username }}
+                </div>
+                <div class="form-input">
+                    <label>{{ form.password.label }}</label>
+                    {{ form.password }}
+                </div>
+                <div class="form-input" id="submit">
+                    <input type="submit" value="Submit">
+                </div>
+            </form>
+        </div>
+    </div>
+
+
+{% endblock %}

@@ -1,0 +1,110 @@
+
+.page-container .container {
+    margin: 10px;
+    width: calc(100% - 20px);
+    height: calc(100% - 20px);
+}
+
+.container .page-title {
+    width: 100%;
+    height: 100px;
+    font-size: 30px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.container .list-container {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    margin-top: 10px;
+}
+
+.list-container .list {
+    width: 80%;
+}
+
+.list a {
+    text-decoration: none;
+    font-size: 18px;
+}
+
+.list .list-item {
+    width: 200px;
+    height: 240px;
+    float: left;
+
+    margin: calc((100%/3 - 200px)/2) calc((100%/3 - 200px)/2);
+    border-radius: 5px;
+    background-color: darkgray;
+}
+
+.list .list-item:hover {
+    background-color: lightgray;
+}
+
+.list .list-item-image {
+    width: 200px;
+    height: 190px;
+    float: left;
+}
+
+.list-item-image img {
+    width: 150px;
+    height: 150px;
+    margin: 25px;
+}
+
+.list .list-item-description {
+    width: calc(100% - 20px);
+    height: 50px;
+    margin: 0 10px;
+    text-align: center;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+
+    font-size: 20px;
+    color: white;
+
+}
+
+.container .list-controls-container {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.list-controls-container .list_controls {
+
+}
+
+.list-controls-container a {
+    text-decoration: none;
+}
+
+.list-controls .list-control {
+    width: 60px;
+    height: 60px;
+    float: left;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    margin: 20px;
+    border-radius: 50%;
+    color: white;
+    background-color: darkgray;
+    font-size: 20px;
+}
+
+.list-controls .list-control:hover {
+    background-color: lightgray;
+}
+
+.list-control img {
+    width: 30px;
+    height: 30px;
+}

@@ -1,0 +1,78 @@
+{% extends "base-with-navbar.html" %}
+{% load static %}
+
+{% block title %} Search {% endblock %}
+
+{% block stylesheets %}
+    <link type="text/css" rel="stylesheet" href="{% static "css/search/search.css" %}"/>
+    <link type="text/css" rel="stylesheet" href="{% static "css/base/tag-form-input.css" %}"/>
+{% endblock %}
+
+{% block body %}
+
+    <div class="container">
+        <div class="page-title">
+            Search Document
+        </div>
+        <div class="form-container">
+            <form method="post">
+                {% csrf_token %}
+                <div class="form-input">
+                    <label>{{ form.dossier.label }}</label>
+                    {{ form.dossier }}
+                </div>
+                <div class="form-input">
+                    <label>{{ form.section.label }}</label>
+                    {{ form.section }}
+                </div>
+                <div class="form-input">
+                    <label>{{ form.name.label }}</label>
+                    {{ form.name }}
+                </div>
+                {% include 'tag-form-input.html' %}
+                <div class="form-input" id="submit">
+                    <input class="submit" type="submit" value="Submit">
+                </div>
+            </form>
+        </div>
+    </div>
+{% endblock %}
+
+{% block scripts %}
+    <script src="{% static 'javascript/tag-form-input.js' %}"></script>
+    <script>
+        async function updateSections(obj) {
+            dossier_list = document.getElementById('id_dossier');
+            sections_list = document.getElementById('id_section');
+
+            if (dossier_list.value === '')
+                return;
+
+            const response = await fetch(
+                `/documents/dossiers/${dossier_list.value}/sections_json`,
+                {method: 'GET'}
+            );
+            const sections = await response.json();
+
+            // Remove all options
+            for (let i=sections_list.options.length-1; i >= 0; i--) {
+                sections_list.remove(i);
+            }
+
+            // Add default option 'All'
+            option = document.createElement('option');
+            option.value = '';
+            option.innerText = 'All';
+            sections_list.appendChild(option);
+
+            // Add options received by request
+            JSON.parse(sections.sections).forEach(s => {
+                option = document.createElement('option');
+                option.value = s.pk;
+                option.innerText = s.fields.name;
+
+                sections_list.appendChild(option);
+            });
+        }
+    </script>
+{% endblock %}

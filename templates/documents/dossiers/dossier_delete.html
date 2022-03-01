@@ -1,0 +1,33 @@
+{% extends 'base-with-navbar.html' %}
+{% load static %}
+
+{% block title %}
+
+{% endblock %}
+
+{% block stylesheets %}
+    <link type="text/css" rel="stylesheet" href="{% static 'css/documents/document-delete.css' %}"
+{% endblock %}
+
+{% block body %}
+
+    <div class="container">
+        <div class="page-title">
+            Delete dossier
+        </div>
+        <div class="form-container">
+            <form method="post">
+            {% csrf_token %}
+            <p>Are you sure you want to delete dossier: {{ object.name }}?</p>
+            {{ form }}
+            <input type="submit" value="Yes"/>
+            <input type="button"
+                   value="Cancel"
+                   autofocus
+                   onclick="window.location.replace('{% url 'documents:section_list' object.id %}')"/>
+            </form>
+        </div>
+
+    </div>
+
+{% endblock %}

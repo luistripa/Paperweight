@@ -1,0 +1,43 @@
+{% extends 'base-with-navbar.html' %}
+{% load static %}
+
+{% block title %} New Document {% endblock %}
+
+{% block stylesheets %}
+<link type="text/css" rel="stylesheet" href="{% static "css/documents/document-update.css" %}"/>
+<link type="text/css" rel="stylesheet" href="{% static "css/base/tag-form-input.css" %}"/>
+{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <div class="page-title">
+            Update Document
+        </div>
+        <div class="form-container">
+            <form method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="form-input">
+                    <label>{{ form.name.label }}</label>
+                    {{ form.name }}
+                </div>
+                <div class="form-input">
+                    <label>{{ form.file.label }}</label>
+                    {{ form.file }}
+                </div>
+                {% include 'tag-form-input.html' %}
+                <div class="form-input" id="submit">
+                    <input type="submit" value="Submit"/>
+                </div>
+            </form>
+        </div>
+    </div>
+{% endblock %}
+
+{% block scripts %}
+    <script src="{% static 'javascript/tag-form-input.js' %}"></script>
+    <script>
+        {% for tag in document.tags.values %}
+            add_tag('{{ tag.name }}');
+        {% endfor %}
+    </script>
+{% endblock %}
