@@ -19,7 +19,7 @@ from django.urls import path, include
 import documents.views as documents
 
 urlpatterns = [
-    path('admin/', admin.site.urls),  # TODO: Remove for production
+    path('admin/', admin.site.urls),
     path('', documents.index),
     path('index/', documents.index),
     path('documents/', include('documents.urls')),

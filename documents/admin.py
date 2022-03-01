@@ -7,4 +7,4 @@ admin.site.register(Dossiers)
 admin.site.register(Sections, SectionsAdmin)
 admin.site.register(Document, DocumentAdmin)
 admin.site.register(Tags)
-admin.site.register(AuditLog)  # TODO: Remove for production
+admin.site.register(AuditLog)

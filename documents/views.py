@@ -36,7 +36,7 @@ def documents_tags_list_as_json(request: HttpRequest, *args, **kwargs):
     if search_text == "":
         return JsonResponse({'tags': '[]'})
 
-    tags = Tags.objects.filter(name__contains=search_text)  # TODO: Is this even safe?
+    tags = Tags.objects.filter(name__contains=search_text)
 
     tags_serialized = serializers.serialize('json', tags, fields='name')
 
