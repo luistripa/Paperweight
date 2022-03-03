@@ -201,6 +201,8 @@ class DocumentCreateView(LoginRequiredMixin, SectionMixin, CreateView):
         form.save()
 
         for tag_str in tag_list:
+            if tag_str == "":
+                continue
             tag, created = Tags.objects.get_or_create(name=tag_str)
             form.instance.tags.add(tag)
 
