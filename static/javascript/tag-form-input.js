@@ -16,7 +16,7 @@ tag_input.addEventListener('input', function (event) {
     if (trimmed_value.length === 0)
         return;
 
-    if (value[value.length-1] === " ") {
+    if (value[value.length-1] === " ") { // If user pressed the space bar
         clearTimeout(timerId);
         add_tag(trimmed_value);
         tags.add(trimmed_value);
@@ -36,7 +36,9 @@ tag_input.addEventListener('input', function (event) {
 });
 
 async function searchTag(value) {
-    // TODO: Show 'Searching tags...'
+    let p = document.createElement('p');
+    p.innerText = "Searching tags...";
+    tag_container.appendChild(p);
 
     const res = await fetch(`/documents/tags?text=${value}`);
     const json = await res.json();
