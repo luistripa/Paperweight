@@ -116,14 +116,31 @@ class Document(models.Model):
 
     tags = models.ManyToManyField('Tags', blank=True)
 
+    @property
     def extension(self):
-        name, extension = os.path.splitext(self.file_path.name)
-        return extension
+        _, extension = os.path.splitext(self.file_path.name)
+        return extension.strip(".")
+
+    def extension_is_supported(self):
+        supported_extension = SupportedExtension.objects.filter(name=self.extension)
+        return supported_extension.exists()
 
     def __str__(self):
         return self.name
 
     def __repr__(self):
+        return self.name
+
+
+class SupportedExtension(models.Model):
+    class Meta:
+        verbose_name = 'Supported Extension'
+        verbose_name_plural = 'Supported Extensions'
+        ordering = ['name']
+
+    name = models.CharField(max_length=5, primary_key=True)
+
+    def __str__(self):
         return self.name
 
 

@@ -17,7 +17,21 @@
                 {% for document in object_list %}
                     <a href="{% url 'documents:document_detail' dossier.id section.id document.id %}">
                         <div class="list-item">
-                                {{ document.name }} {{ document.extension }}
+                            <div class="item-image">
+                                {% if document.extension_is_supported %}
+                                    <img src="{% static 'images/file-extension-icons' %}/{{ document.extension }}.png" title="{{ document.extension }}"/>
+                                {% else %}
+                                    <img src="{% static 'images/file-extension-icons/default_extension.png' %}" title="{{ document.extension }}"/>
+                                {% endif %}
+
+                            </div>
+                            <div class="item-description">
+                                {% if document.extension_is_supported %}
+                                    {{ document.name }}
+                                {% else %}
+                                    {{ document.name }}.{{ document.extension }}
+                                {% endif %}
+                            </div>
                         </div>
                     </a>
                 {% endfor %}

@@ -17,7 +17,12 @@
                 {% for document in object_list %}
                     <a href="{% url 'documents:document_detail' document.section.dossier_id document.section_id document.id %}">
                         <div class="list-item">
-                                {{ document.name }} {{ document.extension }}
+                            <div class="item-image">
+                                <img src="{% static 'images/file-extension-icons' %}/{{ document.extension }}.png"/>
+                            </div>
+                            <div class="item-description">
+                                {{ document.name }}
+                            </div>
                         </div>
                     </a>
                 {% empty %}
