@@ -37,5 +37,6 @@ There will be a wiki page in the future guiding you on how to set up Paperweight
 - Run `python3 -m pip install -r requirements`. This will download all python module requirements.
 - Run `python3 manage.py migrate` to create the database (default is a sqlite database) and create all Django-related tables.
 - Run `python3 manage.py makemigrations documents registration` followed by `python3 manage.py migrate` to create all Paperweight required database tables.
+- Run `python3 manage.py build` to run a custom command that will populate the database with the necessary entries
 - Run `python3 manage.py runserver`. This will start the Paperweight server.
 - Paperweight should be running without any issues.
